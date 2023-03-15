@@ -20,12 +20,12 @@ class Router {
         return self::$instance;
     }
 
-    public function addRoute(HttpMethod $method, string $url, string $controllerName, string $methodName) {
+    public function addRoute(string $method, string $url, string $controllerName, string $methodName) {
         $this->routes[] = [
             'method' => $method,
             'url' => $url,
             'controller' => $controllerName,
-            'method' => $methodName
+            'methodName' => $methodName
         ];
     }
 
@@ -37,11 +37,12 @@ class Router {
             $routeMethod = $route['method'];
             $routeUrl = $route['url'];
             $controllerName = $route['controller'];
-            $methodName = $route['method'];
+            $methodName = $route['methodName'];
 
             if ($requestMethod === $routeMethod && preg_match("#^$routeUrl$#", $requestUrl, $matches)) {
                 array_shift($matches);
-
+                
+                print_r($matches);
                 $controller = ControllerFactory::create($controllerName);
                 return call_user_func_array([$controller, $methodName], $matches);
             }

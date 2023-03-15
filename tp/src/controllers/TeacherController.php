@@ -2,11 +2,12 @@
 
 namespace controllers;
 
-use interfaces\Controller;
+use interfaces\IController;
 
 use utils\View;
-use model\Teacher;
-class TeacherController extends Controller {
+use models\Teacher;
+
+class TeacherController implements IController {
 
 
     public Teacher $model;
@@ -21,8 +22,9 @@ class TeacherController extends Controller {
     }
 
     public function getAll() {
-        $teachers = $this->model->getAll();
-        View::render('teachers', ['teachers' => $teachers]);
+        echo 'getAll';
+        // $teachers = $this->model->getAll();
+        View::render('teachers'/** , ['teachers' => $teachers] */);
     }
 
     public function create($data) {
@@ -34,7 +36,7 @@ class TeacherController extends Controller {
         $this->model->update($id,$data);
         View::redirect('/teachers');
     }
-    
+
     public function delete(int $id) {
         $this->model->delete($id);
         View::redirect('/teachers');

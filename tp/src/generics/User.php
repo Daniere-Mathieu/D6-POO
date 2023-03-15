@@ -2,7 +2,9 @@
 
 namespace generics;
 
-class User {
+use interfaces\IUser;
+
+class User implements IUser {
     private string $name;
     private string $firstname;
     private string $email;
@@ -15,6 +17,16 @@ class User {
         $this->firstname = $firstname;
         $this->email = $email;
         $this->password = $password;
+    }
+
+    public function login(string $login, string $password, array $usersList): bool
+    {
+        foreach ($usersList as $user) {
+            if ($user->getEmail() === $login && $user->getPassword() === $password) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getName(): string

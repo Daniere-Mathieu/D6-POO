@@ -2,7 +2,7 @@
 
 namespace interfaces;
 
-interface Controller
+interface IController
 {
     public function get(int $id);
     public function getAll();
