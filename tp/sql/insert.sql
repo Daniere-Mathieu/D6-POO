@@ -5,14 +5,14 @@ VALUES
         NULL,
         'Lecoin',
         'Thomas',
-        'theoplenet@riri.fr',
+        'thomasLecoin@riri.fr',
         '$2y$10$3DDhQOnjaztzldyUJvJAVOXPnUqRLfcIucXql2QKgJa563QYMZEbe'
     ),
     (
         NULL,
         'Plénet',
         'Théo',
-        'thomasLecoin@riri.fr',
+        'theoplenet@riri.fr',
         '$2y$10$3DDhQOnjaztzldyUJvJAVOXPnUqRLfcIucXql2QKgJa563QYMZEbe'
     ),
     (

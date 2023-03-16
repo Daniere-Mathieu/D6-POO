@@ -39,13 +39,34 @@ class Router {
             $controllerName = $route['controller'];
             $methodName = $route['methodName'];
 
-            
+            $routeUrl = preg_replace('/:([^\/]+)/', '(?P<$1>[\w\d]+)', $routeUrl);
+
+
             if ($requestMethod === $routeMethod && preg_match("#^$routeUrl$#", $requestUrl, $matches)) {
                 array_shift($matches);
+
+                $routeParams = array();
+                foreach ($matches as $key => $value) {
+                    if (is_string($key)) {
+                        $routeParams[$key] = $value;
+                    }
+                }   
+
+                if($requestMethod === HttpMethod::POST){
+                    $routeParams[] = $_POST;
+                }
+                
                 
                 $controller = ControllerFactory::create($controllerName);
-                return call_user_func_array([$controller, $methodName], $matches);
+                if (count($routeParams) === 1) {
+                    $arg = reset($routeParams);
+                    return call_user_func_array([$controller, $methodName], [$arg]);
+                } else {
+                    return call_user_func_array([$controller, $methodName], [$routeParams]);
+                }
             }
+
+            
         }
 
         View::render('404');

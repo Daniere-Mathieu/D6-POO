@@ -14,6 +14,23 @@ class View
     {
         try {
             extract($data);
+
+            $path = $_SERVER['DOCUMENT_ROOT'] . '/src/views/' . $viewName . '.php';
+            if(file_exists($path)){
+                require_once($path);
+            }
+            else {
+                throw new \Exception("File not found: $path");
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
+
+    public static function renderWithoutExtract(string $viewName, array $data = []): void
+    {
+        try {
             $path = $_SERVER['DOCUMENT_ROOT'] . '/src/views/' . $viewName . '.php';
             if(file_exists($path)){
                 require_once($path);

@@ -14,7 +14,7 @@ class Student  extends User {
     }
 
     public function getByEmail($email):mixed{
-        $db = Database::getInstance();
+        $db = Database::getPDO();
         $query = $db->prepare("SELECT * FROM teacher WHERE email = :email");
         $query->bindParam(':email', $email);
         $query->execute();

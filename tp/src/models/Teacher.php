@@ -13,20 +13,25 @@ class Teacher extends User
     }
 
     public function getByEmail($email):mixed{
-        $db = Database::getInstance();
+        $db = Database::getPDO();
         $query = $db->prepare("SELECT * FROM teacher WHERE email = :email");
         $query->bindParam(':email', $email);
         $query->execute();
         return $query->fetchObject($this->className);
     }
 
-    public function getImage():string{
-        return $_SERVER['HTTP_HOST'] . "/public/images/teacher/" . $this->id . ".jpg";
+    public function login(string $email,string $password): bool
+    {
+      $teacher = $this->getByEmail($email);
+        if($teacher){
+            if(password_verify($password,$teacher->getPassword())){
+            return true;
+            }
+        }
+        else {
+            return false;
+        }
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
 }
     

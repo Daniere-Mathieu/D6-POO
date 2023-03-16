@@ -14,6 +14,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>firstname</th>
+                <th>page</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +23,7 @@
                     <td><?= $teacher->getId() ?></td>
                     <td><?= $teacher->getName() ?></td>
                     <td><?= $teacher->getFirstname() ?></td>
-                    
+                    <td><a href="<?= '/teacher/'. $teacher->getId()?>">personal page</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

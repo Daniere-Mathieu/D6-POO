@@ -37,4 +37,9 @@ class Verification
         }
         return true;
     }
+
+    public static function isLogged(): bool
+    {
+        return isset($_SESSION['logged']) && !empty($_SESSION['logged']) && $_SESSION['logged'] === true;
+    }
 }

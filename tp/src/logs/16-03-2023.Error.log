@@ -7,3 +7,8 @@ Typed property generics\User::$name must not be accessed before initializationat
 Typed property generics\User::$name must not be accessed before initializationat 26/55/15/16/032023
 Typed property generics\User::$firstname must not be accessed before initializationat 29/04/16/16/032023
 Typed property generics\User::$firstname must not be accessed before initializationat 47/04/16/16/032023
+Call to undefined method utils\Database::getInstance()at 57/07/17/16/03/2023
+models\Teacher::login(): Return value must be of type bool, none returnedat 58/08/17/16/03/2023
+File not found: C:\xampp\htdocs\poo\tp/src/PublicFile.php at 11/26/18/16/03/2023
+Non-static method utils\PublicFile::getImageFile() cannot be called statically at 41/26/18/16/03/2023
+Using $this when not in object context at 53/26/18/16/03/2023

@@ -11,8 +11,9 @@ class Logger
     public static function logAction(mixed $value): void
     {
         try {
-            if(!file_exists($_SERVER["DOCUMENT_ROOT"] . '/logs/'))
-                mkdir($_SERVER["DOCUMENT_ROOT"] . '/logs/');
+            if(!file_exists($_SERVER["DOCUMENT_ROOT"] . '/src/logs/'))
+                mkdir($_SERVER["DOCUMENT_ROOT"] . '/src/logs/');
+                
             $path = $_SERVER["DOCUMENT_ROOT"] . '/src/logs/' . date('d-m-Y') . '.log';
             
             $file = fopen($path, 'a');
@@ -31,10 +32,13 @@ class Logger
     public static function logError(mixed $value): void
     {
         try {
+            if(!file_exists($_SERVER["DOCUMENT_ROOT"] . '/src/logs/'))
+                mkdir($_SERVER["DOCUMENT_ROOT"] . '/src/logs/');
+
             $path = $_SERVER["DOCUMENT_ROOT"] . '/src/logs/' . date('d-m-Y') . '.Error.log';
   
             $file = fopen($path, 'a');
-            fwrite($file, $value . 'at ' . date('s/i/H/d/mY') . PHP_EOL);
+            fwrite($file, $value . ' at ' . date('s/i/H/d/m/Y') . PHP_EOL);
             fclose($file);
         } catch (\Throwable $th) {
             throw $th;
