@@ -12,8 +12,9 @@ use \utils\PublicFile;
     <title>All Teacher</title>
 </head>
 <body>
-    <h1>Teachers</h1>
-    <table>
+    <?php include_once(__DIR__ . '/../partials/header.php') ?>
+    <h1 class="padding-10">Teachers</h1>
+    <table class="padding-10">
         <thead>
             <tr>
                 <th>Id</th>
@@ -28,7 +29,7 @@ use \utils\PublicFile;
                     <td><?= $teacher->getId() ?></td>
                     <td><?= $teacher->getName() ?></td>
                     <td><?= $teacher->getFirstname() ?></td>
-                    <td><a href="<?= '/teacher/'. $teacher->getId()?>">personal page</a></td>
+                    <td><a href="<?= '/teacher/get/'. $teacher->getId()?>">personal page</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

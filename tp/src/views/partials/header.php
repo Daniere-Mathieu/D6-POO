@@ -1,5 +1,5 @@
 <?php 
-use \utils\PublicFile;
+use \utils\{PublicFile, Verification};
 
 ?>
 <!DOCTYPE html>
@@ -20,7 +20,11 @@ use \utils\PublicFile;
             <ul class="navList">
                 <li><a href="/">Home</a></li>
                 <li><a href="/teachers">Teachers</a></li>
-                <li><a href="/teacher/log">Login</a></li>
+                <?php if(Verification::isLogged()) {?>
+                <li><a href="/teacher/logout">Logout</a></li>
+                <?php } else {?>
+                    <li><a href="/teacher/log">Login</a></li>
+                <?php }?>
             </ul>
         </nav>
     </header>

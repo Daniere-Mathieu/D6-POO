@@ -15,8 +15,9 @@ use \utils\PublicFile;
 </head>
 
 <body>
-    <h1>Login/Register</h1>
-    <div>
+    <?php include_once(__DIR__ . '/../partials/header.php') ?>
+    <h1 class="padding-10">Login/Register</h1>
+    <div class="padding-10">
         <h2>Login</h2>
         <form action="/teacher/login" method="post">
             <input type="mail" name="email" placeholder="Email">
@@ -24,7 +25,7 @@ use \utils\PublicFile;
             <button type="submit">Login</button>
         </form>
     </div>
-    <div>
+    <div class="padding-10">
         <h2>Register</h2>
         <form action="/teacher/create" method="post">
             <input type="mail" name="email" placeholder="Email">

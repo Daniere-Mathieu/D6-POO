@@ -121,4 +121,15 @@ class TeacherController implements IController
             throw $th;
         }
     }
+
+    public function logout()
+    {
+        try {
+            session_destroy();
+            View::redirect('/teachers');
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());
+            throw $th;
+        }
+    }
 }
