@@ -7,15 +7,11 @@ use \PDO;
 class Database
 {
     protected static ?PDO $pdo = null;
-    protected $dbUser = "Rihyette";
-    protected $dbDatabase = "classroom";
-    protected $dbPassword = "password";
-    protected $dbHost = "database";
 
 
     private function __construct()
     {
-        $this->pdo = new PDO("mysql:dbname=" . $this->dbDatabase . ";host=" . $this->dbHost . ";", $this->dbUser, $this->dbPassword);
+        self::$pdo = new  PDO("mysql:dbname=" . DB_NAME . ";host=" . DB_HOST . ";", DB_USER, DB_PASSWORD);
     }
 
     /**
@@ -24,7 +20,7 @@ class Database
     public static function getPDO()
     {
         if(self::$pdo == null){
-            $pdo = new Database();
+            new Database();
         }
         return self::$pdo;
     }

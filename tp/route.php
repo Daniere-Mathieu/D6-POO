@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use router\Router;
 use generics\HttpMethod;

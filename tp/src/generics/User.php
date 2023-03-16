@@ -3,16 +3,18 @@
 namespace generics;
 
 use interfaces\IUser;
+use Utils\Crud;
 
-class User implements IUser {
+class User extends Crud implements IUser {
+    private int $id;
     private string $name;
     private string $firstname;
     private string $email;
     private string $password;
-    private string $role;
 
     public function __construct(string $name, string $firstname, string $email, string $password)
     {
+        parent::__construct();
         $this->name = $name;
         $this->firstname = $firstname;
         $this->email = $email;

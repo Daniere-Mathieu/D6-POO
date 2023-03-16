@@ -39,10 +39,10 @@ class Router {
             $controllerName = $route['controller'];
             $methodName = $route['methodName'];
 
+            
             if ($requestMethod === $routeMethod && preg_match("#^$routeUrl$#", $requestUrl, $matches)) {
                 array_shift($matches);
                 
-                print_r($matches);
                 $controller = ControllerFactory::create($controllerName);
                 return call_user_func_array([$controller, $methodName], $matches);
             }

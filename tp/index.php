@@ -8,6 +8,8 @@ use \Autoload\Autoloader;
 use \utils\{Database, View, Verification};
 
 require_once('autoload/Autoload.php');
+require_once('./config.php');
+
 
 // i register my autoload
 Autoloader::register();
