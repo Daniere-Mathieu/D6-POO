@@ -11,7 +11,10 @@ class Logger
     public static function logAction(mixed $value): void
     {
         try {
-            $path = $_SERVER["DOCUMENT_ROOT"] . '/logs/' . date('d-m-Y') . '.log';
+            if(!file_exists($_SERVER["DOCUMENT_ROOT"] . '/logs/'))
+                mkdir($_SERVER["DOCUMENT_ROOT"] . '/logs/');
+            $path = $_SERVER["DOCUMENT_ROOT"] . '/src/logs/' . date('d-m-Y') . '.log';
+            
             $file = fopen($path, 'a');
             fwrite($file, $value . 'at ' . date('H/i/s/d/m/Y') . PHP_EOL);
             fclose($file);
@@ -28,8 +31,8 @@ class Logger
     public static function logError(mixed $value): void
     {
         try {
-            $path = $_SERVER["DOCUMENT_ROOT"] . '/logs/' . date('d-m-Y') . '.Error.log';
-
+            $path = $_SERVER["DOCUMENT_ROOT"] . '/src/logs/' . date('d-m-Y') . '.Error.log';
+  
             $file = fopen($path, 'a');
             fwrite($file, $value . 'at ' . date('s/i/H/d/mY') . PHP_EOL);
             fclose($file);

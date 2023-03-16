@@ -1,8 +1,9 @@
 <?php
 
-namespace utils;
+namespace generics;
 
 use \PDO;
+use utils\Verification;
 
 /**
  * this class is a generic class for basic database interaction like the CRUD and get the pagination
@@ -44,7 +45,7 @@ class Crud
     public function get(PDO $pdo, int $id, string $option = "*"): mixed
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
-        $query = $pdo->prepare('SELECT '. $option .' FROM ' . strtolower($this->getShortName()) . ' WHERE id = :id');
+        $query = $pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE id = :id');
         $query->bindParam(':id', $id);
         $query->execute();
         return $query->fetchObject($this->className);
@@ -57,10 +58,10 @@ class Crud
      * $option string value of the column to get
      * @return array| bool
      */
-    public function getAll(PDO $pdo, int $startID = 1, int $limit = 15,string $option = "*"): array | bool
+    public function getAll(PDO $pdo, int $startID = 1, int $limit = 15, string $option = "*"): array | bool
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
-        $query = $pdo->prepare('SELECT '. $option .' FROM ' . strtolower($this->getShortName()) . ' WHERE id >= :startId LIMIT :limitValue;');
+        $query = $pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE id >= :startId LIMIT :limitValue;');
         $query->bindParam(':startId', $startID);
         $query->bindParam(':limitValue', $limit, PDO::PARAM_INT);
         $query->execute();

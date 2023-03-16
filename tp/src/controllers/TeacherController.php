@@ -6,7 +6,7 @@ use interfaces\IController;
 
 use utils\View;
 use models\Teacher;
-use Utils\Database;
+use Utils\{Database, Logger};
 
 class TeacherController implements IController
 {
@@ -21,42 +21,72 @@ class TeacherController implements IController
 
     public function get(int $id)
     {
-        $pdo = Database::getPDO();
-
-        $teacher = $this->model->get($pdo, $id);
-        View::render('teacher', ['teacher' => $teacher]);
+        try {
+            $pdo = Database::getPDO();
+            $teacher = $this->model->get($pdo, $id);
+            View::render('teacher/card', ['teacher' => $teacher]);
+            Logger::logAction('Teacher ' . $teacher->getFirstname() . ' ' . $teacher->getName() . ' has been consulted' . 'with id: ' . $teacher->getId());
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());
+            View::render('error/error', ['error' => $th->getMessage()]);
+            throw $th;
+        }
     }
 
     public function getAll()
     {
-        $pdo = Database::getPDO();
-        $teachers = $this->model->getAll($pdo);
-        print_r($teachers);
-        View::render(
-            'teachers'
-            /** , ['teachers' => $teachers] */
-        );
+        try {
+            $pdo = Database::getPDO();
+            $teachers = $this->model->getAll($pdo);
+            View::render(
+                'teacher/index',
+                ['teachers' => $teachers]
+            );
+            Logger::logAction('All teachers have been consulted');
+        } catch (\Throwable $th) {
+            logger::logError($th->getMessage());
+            View::render('error/error', ['error' => $th->getMessage()]);
+            throw $th;
+        }
     }
 
     public function create($data)
     {
-        $pdo = Database::getPDO();
-        $this->model->insert($pdo, $data);
-        View::redirect('/teachers');
+        try {
+            $pdo = Database::getPDO();
+            $this->model->insert($pdo, $data);
+            View::redirect('/teachers');
+            Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been created');
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());;
+            throw $th;
+        }
     }
 
     public function update(int $id, $data)
     {
-        $pdo = Database::getPDO();
-        //$this->model->update($id,$data);
-        View::redirect('/teachers');
+        try {
+            $pdo = Database::getPDO();
+            //$this->model->update($id,$data);
+            View::redirect('/teachers');
+            Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been updated with id: ' . $id);
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());
+            throw $th;
+        }
     }
 
     public function delete(int $id)
     {
-        $pdo = Database::getPDO();
+        try {
+            $pdo = Database::getPDO();
 
-        $this->model->delete($pdo, $id);
-        View::redirect('/teachers');
+            $this->model->delete($pdo, $id);
+            View::redirect('/teachers');
+            Logger::logAction('Teacher with id: ' . $id . ' has been deleted');
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());
+            throw $th;
+        }
     }
 }

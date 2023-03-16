@@ -19,6 +19,9 @@ class Autoloader
             if (file_exists($fullPath)) {
                 require_once $fullPath;
             }
+            else {
+                throw new \Exception("File not found: $fullPath");
+            }
         });
     }
 

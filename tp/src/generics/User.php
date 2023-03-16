@@ -1,36 +1,33 @@
-<?php 
+<?php
 
 namespace generics;
 
 use interfaces\IUser;
-use Utils\Crud;
+use generics\Crud;
 
-class User extends Crud implements IUser {
-    private int $id;
-    private string $name;
-    private string $firstname;
-    private string $email;
-    private string $password;
+class User extends Crud implements IUser
+{
+    protected int $id;
+    protected string $name;
+    protected string $firstname;
+    protected string $email;
+    protected string $password;
 
-    public function __construct(string $name, string $firstname, string $email, string $password)
+    public function __construct()
     {
         parent::__construct();
-        $this->name = $name;
-        $this->firstname = $firstname;
-        $this->email = $email;
-        $this->password = $password;
     }
 
     public function login(string $login, string $password, array $usersList): bool
     {
-        foreach ($usersList as $user) {
-            if ($user->getEmail() === $login && $user->getPassword() === $password) {
-                return true;
-            }
-        }
-        return false;
+       
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+    
     public function getName(): string
     {
         return $this->name;
