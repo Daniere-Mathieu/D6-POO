@@ -68,4 +68,9 @@ class User extends Crud implements IUser
     {
         $this->password = $password;
     }
+
+    public function getFullName(): string
+    {
+        return $this->name . " " . $this->firstname;
+    }
 }
