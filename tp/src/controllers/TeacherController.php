@@ -22,8 +22,7 @@ class TeacherController implements IController
     public function get(int $id)
     {
         try {
-            $pdo = Database::getPDO();
-            $teacher = $this->model->get($pdo, $id);
+            $teacher = $this->model->get($id);
             View::render('teacher/card', ['teacher' => $teacher]);
             Logger::logAction('Teacher ' . $teacher->getFirstname() . ' ' . $teacher->getName() . ' has been consulted with id: ' . $teacher->getId());
         } catch (\Throwable $th) {
@@ -36,8 +35,7 @@ class TeacherController implements IController
     public function getAll()
     {
         try {
-            $pdo = Database::getPDO();
-            $teachers = $this->model->getAll($pdo);
+            $teachers = $this->model->getAll();
             View::render(
                 'teacher/index',
                 ['teachers' => $teachers]
@@ -53,9 +51,7 @@ class TeacherController implements IController
     public function create($data)
     {
         try {
-            $pdo = Database::getPDO();
-            print_r($data);
-            $this->model->insert($pdo, $data);
+            $this->model->insert($data);
             View::redirect('/teachers');
             Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been created');
         } catch (\Throwable $th) {
@@ -67,8 +63,8 @@ class TeacherController implements IController
     public function update(int $id, $data)
     {
         try {
-            $pdo = Database::getPDO();
-            //$this->model->update($id,$data);
+            $keys = ['name', 'firstname', 'email'];
+            $this->model->update($id, $data, $keys);
             View::redirect('/teachers');
             Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been updated with id: ' . $id);
         } catch (\Throwable $th) {
@@ -80,9 +76,7 @@ class TeacherController implements IController
     public function delete(int $id)
     {
         try {
-            $pdo = Database::getPDO();
-
-            $this->model->delete($pdo, $id);
+            $this->model->delete($id);
             View::redirect('/teachers');
             Logger::logAction('Teacher with id: ' . $id . ' has been deleted');
         } catch (\Throwable $th) {
@@ -138,8 +132,7 @@ class TeacherController implements IController
     public function getAllTeachersJson()
     {
         try {
-            $pdo = Database::getPDO();
-            $teachers = $this->model->getAll($pdo);
+            $teachers = $this->model->getAll();
             $openTeacher = [];
             foreach ($teachers as $teacher) {
                 $teacher->destroyPrivateProperties();

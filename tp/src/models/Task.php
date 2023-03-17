@@ -11,16 +11,52 @@ class Task extends Crud
     private int $mark;
     private string $name;
     private string $description;
-    private string $comment;
     private DateTime $deadline;
-    public function __construct(int $id,int $mark,string $name,string $description,string $comment,DateTime $deadline)
+
+    public function __construct()
     {
         parent::__construct();
-        $this->id = $id;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getMark(): int
+    {
+        return $this->mark;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+    public function getDeadline(): DateTime
+    {
+        return $this->deadline;
+    }
+
+
+    public function setMark(int $mark): void
+    {
         $this->mark = $mark;
+    }
+
+    public function setName(string $name): void
+    {
         $this->name = $name;
+    }
+    public function setDescription(string $description): void
+    {
         $this->description = $description;
-        $this->comment = $comment;
+    }
+    public function setDeadline(DateTime $deadline): void
+    {
         $this->deadline = $deadline;
     }
 }

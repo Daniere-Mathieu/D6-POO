@@ -5,20 +5,24 @@ namespace models;
 use generics\User;
 
 
-class Student  extends User {
+class Student  extends User
+{
 
 
-    public function __construct(string $name = "", string $firstname = "", string $email= "", string $password= "")
+    private int $classroom;
+
+
+    public function __construct()
     {
-        parent::__construct($name, $firstname, $email, $password);
+        parent::__construct();
     }
 
-    public function getByEmail($email):mixed{
-        $db = Database::getPDO();
-        $query = $db->prepare("SELECT * FROM teacher WHERE email = :email");
-        $query->bindParam(':email', $email);
-        $query->execute();
-        return $query->fetchObject($this->className);
+    public function getClassroom(): int
+    {
+        return $this->classroom;
     }
-
+    public function setClassroom(int $classroom): void
+    {
+        $this->classroom = $classroom;
+    }
 }

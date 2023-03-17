@@ -3,7 +3,7 @@
 namespace generics;
 
 use \PDO;
-use utils\Verification;
+use utils\{Verification, Database};
 
 /**
  * this class is a generic class for basic database interaction like the CRUD and get the pagination
@@ -17,6 +17,8 @@ class Crud
      */
     protected string $className;
 
+    protected PDO $pdo;
+
     /**
      * the methods construct is execute when the class is create
      */
@@ -24,6 +26,7 @@ class Crud
     {
         // i assign the value of the class with the function get_called_class()
         $this->className = get_called_class();
+        $this->pdo = Database::getPDO();
     }
 
     /**
@@ -37,48 +40,68 @@ class Crud
     }
 
     /**
-     * $pdo PDO object use to get the data in the database
      * $id int id of the object
      * $option string value of the column to get
      * @return T| bool
      */
-    public function get(PDO $pdo, int $id, string $option = "*"): mixed
+    public function get(int $id, string $option = "*"): mixed
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
-        $query = $pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE id = :id');
+        $query = $this->pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE id = :id');
         $query->bindParam(':id', $id);
         $query->execute();
         return $query->fetchObject($this->className);
     }
 
     /**
-     * $pdo PDO object use to get the data in the database
      * $startID int id of the first object
      * $limit int number of object to get
      * $option string value of the column to get
      * @return array| bool
      */
-    public function getAll(PDO $pdo, int $startID = 1, int $limit = 15, string $option = "*"): array | bool
+    public function getAll(int $startID = 1, int $limit = 15, string $option = "*"): array | bool
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
-        $query = $pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE id >= :startId LIMIT :limitValue;');
+        $query = $this->pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE id >= :startId LIMIT :limitValue;');
         $query->bindParam(':startId', $startID);
         $query->bindParam(':limitValue', $limit, PDO::PARAM_INT);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS, $this->className);
     }
 
-    public function insert(PDO $pdo, array $value): bool
+    public function insert(array $value): bool
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
         $sqlRequest = 'INSERT INTO ' . strtolower($this->getShortName()) . ' (`firstname`, `lastname`, `profilePicture`,`address`,`phoneNumber`,`trigram`) VALUES (:firstname, :lastname, :profilePicture,:address,:phoneNumber,:trigram)';
-        $query = $pdo->prepare($sqlRequest);
+        $query = $this->pdo->prepare($sqlRequest);
         return $query->execute($value);
     }
-    public function delete(PDO $pdo, int $id): bool
+
+    public function update(int $id, array $data, array $keys): bool
+    {
+        if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) || !Verification::arrayKeysExistAndNotEmpty($keys, $data)) return false;
+        $setClause = '';
+        foreach ($keys as $key) {
+            if ($setClause != '') {
+                $setClause .= ', ';
+            }
+            $setClause .= $key . ' = :' . $key;
+        }
+        $query = $this->pdo->prepare('UPDATE ' . strtolower($this->getShortName()) . ' SET ' . $setClause . ' WHERE id = :id');
+        $query->bindParam(':id', $id);
+
+        foreach ($keys as $key) {
+            if (isset($data[$key])) {
+                $query->bindParam(':' . $key, $data[$key]);
+            }
+        }
+        return $query->execute();
+    }
+
+    public function delete(int $id): bool
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
-        $query = $pdo->prepare('DELETE FROM ' . strtolower($this->getShortName()) . ' WHERE id = :id');
+        $query = $this->pdo->prepare('DELETE FROM ' . strtolower($this->getShortName()) . ' WHERE id = :id');
         $query->bindParam(':id', $id);
         return $query->execute();
     }
@@ -88,11 +111,11 @@ class Crud
      * @param PDO $pdo PDO object use to count in the database
      * @return int number of user register in the database
      */
-    private function count(PDO $pdo): int
+    private function count(): int
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
 
-        $query = $pdo->prepare('SELECT COUNT(*) FROM ' . strtolower($this->getShortName()));
+        $query = $this->pdo->prepare('SELECT COUNT(*) FROM ' . strtolower($this->getShortName()));
         $query->execute();
         return $query->fetch()[0];
     }
@@ -103,10 +126,18 @@ class Crud
      * @param int $limit limit of element display per page
      * @return int number of page
      */
-    public function getPagination(PDO $pdo, int $limit): int
+    public function getPagination(int $limit): int
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
-        $count = $this->count($pdo);
+        $count = $this->count();
         return intVal(ceil($count / $limit));
+    }
+
+    public function getByEmail(string $email, string $option = '*'): mixed
+    {
+        $query = $this->pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE email = :email');
+        $query->bindParam(':email', $email);
+        $query->execute();
+        return $query->fetchObject($this->className);
     }
 }
