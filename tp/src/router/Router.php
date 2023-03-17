@@ -3,24 +3,28 @@
 namespace router;
 
 use generics\HttpMethod;
-use Utils\View;
-use Factories\ControllerFactory;
+use utils\View;
+use factories\ControllerFactory;
 
-class Router {
+class Router
+{
     protected array $routes = [];
     private static ?Router $instance = null;
 
-    private function __construct() {
+    private function __construct()
+    {
     }
 
-    public static function getInstance(): Router {
+    public static function getInstance(): Router
+    {
         if (self::$instance === null) {
             self::$instance = new Router();
         }
         return self::$instance;
     }
 
-    public function addRoute(string $method, string $url, string $controllerName, string $methodName) {
+    public function addRoute(string $method, string $url, string $controllerName, string $methodName)
+    {
         $this->routes[] = [
             'method' => $method,
             'url' => $url,
@@ -29,7 +33,8 @@ class Router {
         ];
     }
 
-    public function route() {
+    public function route()
+    {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $requestUrl = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -50,13 +55,13 @@ class Router {
                     if (is_string($key)) {
                         $routeParams[$key] = $value;
                     }
-                }   
+                }
 
-                if($requestMethod === HttpMethod::POST){
+                if ($requestMethod === HttpMethod::POST) {
                     $routeParams[] = $_POST;
                 }
-                
-                
+
+
                 $controller = ControllerFactory::create($controllerName);
                 if (count($routeParams) === 1) {
                     $arg = reset($routeParams);
@@ -65,11 +70,8 @@ class Router {
                     return call_user_func_array([$controller, $methodName], [$routeParams]);
                 }
             }
-
-            
         }
 
         View::render('404');
     }
-
 }

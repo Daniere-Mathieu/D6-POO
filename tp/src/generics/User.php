@@ -18,16 +18,12 @@ class User extends Crud implements IUser
         parent::__construct();
     }
 
-    public function login(string $email,string $password): bool
-    {
-        
-    }
 
     public function getId(): int
     {
         return $this->id;
     }
-    
+
     public function getName(): string
     {
         return $this->name;

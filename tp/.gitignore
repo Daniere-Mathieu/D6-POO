@@ -1,2 +1,2 @@
 .env
-./src/logs/*.log
+/src/logs/*.log

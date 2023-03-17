@@ -1,7 +1,8 @@
 <?php
 
 namespace utils;
-use \utils\View;
+
+use utils\View;
 
 class PublicFile
 {
@@ -25,22 +26,25 @@ class PublicFile
         readfile($filename);
     }
 
-    public static function returnStyle($filename){
+    public static function returnStyle($filename)
+    {
         // Check that the file exists and is a file
-    if (!file_exists($filename) || !is_file($filename)) {
-        View::render('404');
-        return;
-    }
-    header('Content-Type: text/css');
+        if (!file_exists($filename) || !is_file($filename)) {
+            View::render('404');
+            return;
+        }
+        header('Content-Type: text/css');
 
-    readfile($filename);
-    }
-
-    public static function getStyleFile($filename){
-        return "http://" . $_SERVER['HTTP_HOST'] .'/public/styles/' . $filename . ".css";
+        readfile($filename);
     }
 
-    public static function getImageFile(int $id):string{
+    public static function getStyleFile($filename)
+    {
+        return "http://" . $_SERVER['HTTP_HOST'] . '/public/styles/' . $filename . ".css";
+    }
+
+    public static function getImageFile(int $id): string
+    {
         return "http://" . $_SERVER['HTTP_HOST'] . "/public/images/teacher/" . $id . ".png";
     }
 }

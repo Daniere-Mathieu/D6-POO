@@ -6,7 +6,7 @@ use interfaces\IController;
 
 use utils\View;
 use models\Teacher;
-use Utils\{Database, Logger, Verification};
+use utils\{Database, Logger, Verification};
 
 class TeacherController implements IController
 {
@@ -94,10 +94,12 @@ class TeacherController implements IController
     public function login($data)
     {
         try {
-            $log = $this->model->login($data['email'], $data['password']);
-            if ($log) {
-                $_SESSION['logged'] = $log;
-                View::redirect('/teachers');
+            $teacher = $this->model->getByEmail($data['email']);
+            if ($teacher) {
+                if (password_verify($data['password'], $teacher->getPassword())) {
+                    $_SESSION['logged'] = true;
+                    View::redirect('/teachers');
+                }
             } else {
                 View::redirect('/teacher/log');
             }
