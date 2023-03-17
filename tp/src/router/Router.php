@@ -46,6 +46,10 @@ class Router
 
             $routeUrl = preg_replace('/:([^\/]+)/', '(?P<$1>[\w\d]+)', $routeUrl);
 
+            if (strpos($requestUrl, '/api') === 0) {
+                return;
+            }
+
 
             if ($requestMethod === $routeMethod && preg_match("#^$routeUrl$#", $requestUrl, $matches)) {
                 array_shift($matches);

@@ -1,18 +1,16 @@
 {
   "folders": [
     {
-      "path": "../exercice",
-      "name": "exercice"
-      
+      "name": "DAB",
+      "path": "../DAB"
     },
     {
-      
-      "path": "../DAB/",
-      "name": "DAB"
+      "name": "exercice",
+      "path": "../exercice"
     },
     {
-      "path": "../TP/",
-      "name": "TP"
+      "name": "TP",
+      "path": "../TP"
     }
   ],
   "settings": {}

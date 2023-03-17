@@ -1,18 +1,21 @@
-<?php 
-use \utils\PublicFile;
+<?php
+
+use \utils\{PublicFile, View};
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= PublicFile::getStyleFile('index')?>">
+    <link rel="stylesheet" href="<?= PublicFile::getStyleFile('index') ?>">
     <title>All Teacher</title>
 </head>
+
 <body>
-    <?php include_once(__DIR__ . '/../partials/header.php') ?>
+    <?php View::render('partials/header'); ?>
     <h1 class="padding-10">Teachers</h1>
     <table class="padding-10">
         <thead>
@@ -29,10 +32,11 @@ use \utils\PublicFile;
                     <td><?= $teacher->getId() ?></td>
                     <td><?= $teacher->getName() ?></td>
                     <td><?= $teacher->getFirstname() ?></td>
-                    <td><a href="<?= '/teacher/get/'. $teacher->getId()?>">personal page</a></td>
+                    <td><a href="<?= '/teacher/get/' . $teacher->getId() ?>">personal page</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </body>
+
 </html>

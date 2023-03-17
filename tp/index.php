@@ -11,7 +11,6 @@ require_once('autoload/Autoload.php');
 require_once('./config.php');
 
 
-// i register my autoload
 Autoloader::register();
 
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

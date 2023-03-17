@@ -134,4 +134,21 @@ class TeacherController implements IController
             throw $th;
         }
     }
+
+    public function getAllTeachersJson()
+    {
+        try {
+            $pdo = Database::getPDO();
+            $teachers = $this->model->getAll($pdo);
+            $openTeacher = [];
+            foreach ($teachers as $teacher) {
+                $teacher->destroyPrivateProperties();
+                $openTeacher[] = $teacher->getJSONEncode();
+            }
+            echo json_encode($openTeacher);
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());
+            throw $th;
+        }
+    }
 }

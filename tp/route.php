@@ -5,6 +5,8 @@ use generics\HttpMethod;
 
 $router = Router::getInstance();
 
+$router->addRoute(HttpMethod::GET, '/', 'Home', 'index');
+
 $router->addRoute(HttpMethod::GET, '/teachers', 'Teacher', 'getAll');
 $router->addRoute(HttpMethod::GET, '/teacher/get/:id', 'Teacher', 'get');
 $router->addRoute(HttpMethod::GET, '/teacher/log', 'Teacher', 'log');

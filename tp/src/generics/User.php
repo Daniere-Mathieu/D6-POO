@@ -69,4 +69,22 @@ class User extends Crud implements IUser
     {
         return $this->name . " " . $this->firstname;
     }
+    public function getJSONEncode()
+    {
+        return json_encode(get_object_vars($this));
+    }
+
+    public function destroyPassword()
+    {
+        unset($this->password);
+    }
+    public function destroyClassName()
+    {
+        unset($this->className);
+    }
+    public function destroyPrivateProperties()
+    {
+        $this->destroyPassword();
+        $this->destroyClassName();
+    }
 }
