@@ -2,29 +2,29 @@
 
 namespace controllers;
 
+
 use interfaces\IController;
-
+use models\Student;
 use utils\View;
-use models\Teacher;
-use utils\{Database, Logger, Verification};
+use utils\{Logger, Verification};
 
-class TeacherController implements IController
+class StudentController implements IController
 {
 
 
-    public Teacher $model;
+    public Student $model;
 
     public function __construct()
     {
-        $this->model = new Teacher();
+        $this->model = new Student();
     }
 
     public function get(int $id)
     {
         try {
-            $teacher = $this->model->get($id);
-            View::render('teacher/card', ['teacher' => $teacher]);
-            Logger::logAction('Teacher ' . $teacher->getFirstname() . ' ' . $teacher->getName() . ' has been consulted with id: ' . $teacher->getId());
+            $student = $this->model->get($id);
+            View::render('student/card', ['student' => $student]);
+            Logger::logAction('Teacher ' . $student->getFirstname() . ' ' . $student->getName() . ' has been consulted with id: ' . $student->getId());
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());
             View::render('error/error', ['error' => $th->getMessage()]);
@@ -35,12 +35,12 @@ class TeacherController implements IController
     public function getAll()
     {
         try {
-            $teachers = $this->model->getAll();
+            $students = $this->model->getAll();
             View::render(
-                'teacher/index',
-                ['teachers' => $teachers]
+                'student/index',
+                ['students' => $students]
             );
-            Logger::logAction('All teachers have been consulted');
+            Logger::logAction('All students have been consulted');
         } catch (\Throwable $th) {
             logger::logError($th->getMessage());
             View::render('error/error', ['error' => $th->getMessage()]);
@@ -48,21 +48,11 @@ class TeacherController implements IController
         }
     }
 
-    public function create(array $data)
+    public function create($data)
     {
         try {
-            $arrayKeys = ['name', 'firstname', "email", "password"];
-            if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) || !Verification::arrayKeysExistAndNotEmpty($arrayKeys, $data)) return false;
-
-            if (!$this->model->notExistByValue('email', $data["email"])) {
-                // todo redirect into flash message error
-            };
-
-            $isCreated = $this->model->insert($data, $arrayKeys);
-            if (!$isCreated) {
-                // TODO redirect with flash message error
-            }
-            View::redirect('/teachers');
+            $this->model->insert($data);
+            View::redirect('/students');
             Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been created');
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());;
@@ -75,7 +65,7 @@ class TeacherController implements IController
         try {
             $keys = ['name', 'firstname', 'email'];
             $this->model->update($id, $data, $keys);
-            View::redirect('/teachers');
+            View::redirect('/students');
             Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been updated with id: ' . $id);
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());
@@ -87,7 +77,7 @@ class TeacherController implements IController
     {
         try {
             $this->model->delete($id);
-            View::redirect('/teachers');
+            View::redirect('/students');
             Logger::logAction('Teacher with id: ' . $id . ' has been deleted');
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());
@@ -98,14 +88,14 @@ class TeacherController implements IController
     public function login($data)
     {
         try {
-            $teacher = $this->model->getByEmail($data['email']);
-            if ($teacher) {
-                if (password_verify($data['password'], $teacher->getPassword())) {
+            $student = $this->model->getByEmail($data['email']);
+            if ($student) {
+                if (password_verify($data['password'], $student->getPassword())) {
                     $_SESSION['logged'] = true;
-                    View::redirect('/teachers');
+                    View::redirect('/students');
                 }
             } else {
-                View::redirect('/teacher/log');
+                View::redirect('/student/log');
             }
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());
@@ -118,9 +108,9 @@ class TeacherController implements IController
         try {
 
             if (Verification::isLogged()) {
-                View::redirect('/teachers');
+                View::redirect('/students');
             } else {
-                View::render('teacher/login');
+                View::render('student/login');
             }
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());
@@ -132,7 +122,7 @@ class TeacherController implements IController
     {
         try {
             session_destroy();
-            View::redirect('/teachers');
+            View::redirect('/students');
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());
             throw $th;
@@ -142,11 +132,11 @@ class TeacherController implements IController
     public function getAllTeachersJson()
     {
         try {
-            $teachers = $this->model->getAll();
+            $students = $this->model->getAll();
             $openTeacher = [];
-            foreach ($teachers as $teacher) {
-                $teacher->destroyPrivateProperties();
-                $openTeacher[] = $teacher->getJSONEncode();
+            foreach ($students as $student) {
+                $student->destroyPrivateProperties();
+                $openTeacher[] = $student->getJSONEncode();
             }
             echo json_encode($openTeacher);
         } catch (\Throwable $th) {

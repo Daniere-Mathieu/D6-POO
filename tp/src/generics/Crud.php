@@ -69,12 +69,28 @@ class Crud
         return $query->fetchAll(PDO::FETCH_CLASS, $this->className);
     }
 
-    public function insert(array $value): bool
+    public function insert(array $data, array $keys = []): bool
     {
-        if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
-        $sqlRequest = 'INSERT INTO ' . strtolower($this->getShortName()) . ' (`firstname`, `lastname`, `profilePicture`,`address`,`phoneNumber`,`trigram`) VALUES (:firstname, :lastname, :profilePicture,:address,:phoneNumber,:trigram)';
+        if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) || !Verification::arrayKeysExistAndNotEmpty($keys, $data)) return false;
+        $param = '';
+
+
+        $valueParam = '';
+        foreach ($keys as $key) {
+            if ($param != '') {
+                $param .= ',';
+            }
+            $param .= '`' . $key . '`';
+
+            // value param compute
+            if ($valueParam != '') {
+                $valueParam .= ', ';
+            }
+            $valueParam .= ':' . $key;
+        };
+        $sqlRequest = 'INSERT INTO ' . strtolower($this->getShortName()) . ' (' . $param . ') VALUES (' . $valueParam . ')';
         $query = $this->pdo->prepare($sqlRequest);
-        return $query->execute($value);
+        return $query->execute($data);
     }
 
     public function update(int $id, array $data, array $keys): bool
@@ -139,5 +155,20 @@ class Crud
         $query->bindParam(':email', $email);
         $query->execute();
         return $query->fetchObject($this->className);
+    }
+
+    /**
+     * @return bool true if value doesn't exist in database and false for the rest
+     */
+    public function notExistByValue(string $key, string $value): bool
+    {
+        if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
+        $query = $this->pdo->prepare('SELECT * FROM ' . strtolower($this->getShortName()) . ' WHERE ' . $key . ' = :value');
+        $query->bindParam(':value', $email);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            return false;
+        }
+        return true;
     }
 }

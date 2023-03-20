@@ -29,6 +29,8 @@ use \utils\{PublicFile, View};
     <div class="padding-10">
         <h2>Register</h2>
         <form action="/teacher/create" method="post">
+            <input type="text" name="name" placeholder="Name">
+            <input type="text" name="firstname" placeholder="Firstname">
             <input type="mail" name="email" placeholder="Email">
             <input type="password" name="password" placeholder="Password">
             <button type="submit">register</button>
