@@ -1,5 +1,5 @@
 <?php 
-use \utils\{PublicFile, Verification};
+use \utils\{PublicFile, Verification, View};
 
 ?>
 <!DOCTYPE html>
@@ -28,5 +28,6 @@ use \utils\{PublicFile, Verification};
             </ul>
         </nav>
     </header>
+    <?php View::getFlashMessage() ?>
 </body>
 </html>

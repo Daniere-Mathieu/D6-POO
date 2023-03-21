@@ -7,6 +7,7 @@ use interfaces\IController;
 use utils\View;
 use models\Teacher;
 use utils\{Database, Logger, Verification};
+use generics\FlashCardType;
 
 class TeacherController implements IController
 {
@@ -91,10 +92,13 @@ class TeacherController implements IController
             $teacher = $this->model->getByEmail($data['email']);
             if ($teacher) {
                 if (password_verify($data['password'], $teacher->getPassword())) {
+
                     $_SESSION['logged'] = true;
+                    View::setFlashMessage( 'You are now logged in',FlashCardType::isSuccess);
                     View::redirect('/teachers');
                 }
             } else {
+                View::setFlashMessage( 'You failed to log in',FlashCardType::isError);
                 View::redirect('/teacher/log');
             }
         } catch (\Throwable $th) {

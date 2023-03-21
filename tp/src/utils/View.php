@@ -2,6 +2,7 @@
 
 namespace utils;
 
+use utils\Verification;
 
 class View
 {
@@ -47,5 +48,23 @@ class View
     public static function redirect(string $path): void
     {
         header('Location: ' . $path);
+    }
+
+    public static function setFlashMessage(string $message, string $type = 'isSuccess'): void
+    {
+        $_SESSION['flashMessage'] = [
+            'message' => $message,
+            'type' => $type
+        ];
+    }
+
+    public static function getFlashMessage(): void
+    {
+        if(array_key_exists('flashMessage',$_SESSION) && !Verification::verifyIfNotExistAndIsEmpty($_SESSION['flashMessage'])){
+            $flashMessage = $_SESSION['flashMessage'];
+            unset($_SESSION['flashMessage']);
+            echo "<div class='flashCard shadow {$flashMessage['type']}'>{$flashMessage['message']}</div>";
+        }
+        return;
     }
 }

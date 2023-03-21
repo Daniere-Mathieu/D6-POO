@@ -53,3 +53,40 @@ img {
 .padding-10 {
   padding: 0 10px;
 }
+
+.flashCard {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: fadeOut 10s forwards;
+  padding: 5px 10px;
+  border-radius: 5px;
+  max-width: 200px;
+}
+.isError {
+  color: red;
+}
+.isSuccess {
+  color: green;
+}
+.isWarning {
+  color: orange;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  99% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
