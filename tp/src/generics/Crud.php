@@ -164,7 +164,7 @@ class Crud
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
         $query = $this->pdo->prepare('SELECT * FROM ' . strtolower($this->getShortName()) . ' WHERE ' . $key . ' = :value');
-        $query->bindParam(':value', $email);
+        $query->bindParam(':value', $value);
         $query->execute();
         if ($query->rowCount() > 0) {
             return false;

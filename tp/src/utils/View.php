@@ -48,6 +48,7 @@ class View
     public static function redirect(string $path): void
     {
         header('Location: ' . $path);
+        die();
     }
 
     public static function setFlashMessage(string $message, string $type = 'isSuccess'): void

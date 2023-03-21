@@ -87,4 +87,8 @@ class User extends Crud implements IUser
         $this->destroyPassword();
         $this->destroyClassName();
     }
+    public function __toString()
+    {
+        return $this->getFullName();
+    }
 }

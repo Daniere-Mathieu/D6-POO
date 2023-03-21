@@ -56,12 +56,15 @@ class TeacherController implements IController
             if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) || !Verification::arrayKeysExistAndNotEmpty($arrayKeys, $data)) return false;
 
             if (!$this->model->notExistByValue('email', $data["email"])) {
-                // todo redirect into flash message error
+                View::setFlashMessage( 'This email already exist',FlashCardType::isError);
+                View::redirect('/teacher/log');
             };
 
+            echo "test";
             $isCreated = $this->model->insert($data, $arrayKeys);
             if (!$isCreated) {
-                // TODO redirect with flash message error
+                View::setFlashMessage( 'error to create the teacher',FlashCardType::isError);
+                View::redirect('/teacher/log');
             }
             View::redirect('/teachers');
             Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been created');
