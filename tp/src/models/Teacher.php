@@ -11,4 +11,9 @@ class Teacher extends User
     {
         parent::__construct();
     }
+
+    public function getFullName(): string
+    {
+        return $this->name . " " . $this->firstname;
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use \utils\{PublicFile, View};
+use \utils\{PublicFile, View, Verification};
 
 ?>
 <!DOCTYPE html>
@@ -22,8 +22,10 @@ use \utils\{PublicFile, View};
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>firstname</th>
-                <th>page</th>
+                <th>Firstname</th>
+                <th>Page</th>
+                <th>Update</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +35,10 @@ use \utils\{PublicFile, View};
                     <td><?= $teacher->getName() ?></td>
                     <td><?= $teacher->getFirstname() ?></td>
                     <td><a href="<?= '/teacher/get/' . $teacher->getId() ?>">personal page</a></td>
+                    <?php if(Verification::isIdEquivalent($teacher->getId()) && Verification::isTeacher()): ?>
+                        <td><a href="<?= '/teacher/update/' . $teacher->getId() ?>">update</a></td>
+                        <td><a href="<?= '/teacher/delete/' . $teacher->getId() ?>">delete</a></td>
+                    <?php endif ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -6,7 +6,7 @@ use interfaces\IController;
 
 use utils\View;
 use models\Teacher;
-use utils\{Database, Logger, Verification};
+use utils\{Logger, Verification, Hash};
 use generics\FlashCardType;
 
 class TeacherController implements IController
@@ -56,14 +56,14 @@ class TeacherController implements IController
             if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) || !Verification::arrayKeysExistAndNotEmpty($arrayKeys, $data)) return false;
 
             if (!$this->model->notExistByValue('email', $data["email"])) {
-                View::setFlashMessage( 'This email already exist',FlashCardType::isError);
+                View::setFlashMessage('This email already exist', FlashCardType::isError);
                 View::redirect('/teacher/log');
             };
 
-            echo "test";
+            $data['password'] = Hash::hashPassword($data['password']);
             $isCreated = $this->model->insert($data, $arrayKeys);
             if (!$isCreated) {
-                View::setFlashMessage( 'error to create the teacher',FlashCardType::isError);
+                View::setFlashMessage('error to create the teacher', FlashCardType::isError);
                 View::redirect('/teacher/log');
             }
             View::redirect('/teachers');
@@ -74,11 +74,13 @@ class TeacherController implements IController
         }
     }
 
-    public function update(int $id, $data)
+    public function update(array $data)
     {
         try {
-            $keys = ['name', 'firstname', 'email'];
-            $this->model->update($id, $data, $keys);
+            $keys = ['name', 'firstname', 'email', 'id'];
+            if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) && Verification::arrayKeysExistAndNotEmpty($keys, $data) && !Verification::isTeacher() && !Verification::isIdEquivalent($data['id'])) return false;
+
+            $this->model->update($data["id"], $data, $keys);
             View::redirect('/teachers');
             Logger::logAction('Teacher ' . $data['firstname'] . ' ' . $data['name'] . ' has been updated with id: ' . $id);
         } catch (\Throwable $th) {
@@ -86,13 +88,44 @@ class TeacherController implements IController
             throw $th;
         }
     }
-
-    public function delete(int $id)
+    public function updateView(int $id)
     {
         try {
-            $this->model->delete($id);
+            if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) && !Verification::isTeacher() && !Verification::isIdEquivalent($id)) return false;
+
+            $teacher = $this->model->get($id);
+            View::render('teacher/update', ['teacher' => $teacher]);
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());
+            throw $th;
+        }
+    }
+
+    public function delete(array $data)
+    {
+        try {
+            if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) && Verification::arrayKeysExistAndNotEmpty(["id"], $data) && !Verification::isTeacher() && !Verification::isIdEquivalent($data['id'])) return false;
+
+            $this->model->delete($data["id"]);
+            unset($_SESSION['logged']);
+            unset($_SESSION['role']);
+            unset($_SESSION['id']);
+            View::setFlashMessage('Teacher has been deleted', FlashCardType::isSuccess);
+            Logger::logAction('Teacher with id: ' . $data["id"] . ' has been deleted');
+
             View::redirect('/teachers');
-            Logger::logAction('Teacher with id: ' . $id . ' has been deleted');
+        } catch (\Throwable $th) {
+            Logger::logError($th->getMessage());
+            throw $th;
+        }
+    }
+    public function deleteView(int $id)
+    {
+        try {
+            if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) &&  !Verification::isTeacher() && !Verification::isIdEquivalent($id)) return false;
+
+            $teacher = $this->model->get($id);
+            View::render('teacher/delete', ['teacher' => $teacher]);
         } catch (\Throwable $th) {
             Logger::logError($th->getMessage());
             throw $th;
@@ -103,15 +136,15 @@ class TeacherController implements IController
     {
         try {
             $teacher = $this->model->getByEmail($data['email']);
-            if ($teacher) {
-                if (password_verify($data['password'], $teacher->getPassword())) {
+            if ($teacher && password_verify($data['password'], $teacher->getPassword())) {
 
-                    $_SESSION['logged'] = true;
-                    View::setFlashMessage( 'You are now logged in',FlashCardType::isSuccess);
-                    View::redirect('/teachers');
-                }
+                $_SESSION['logged'] = true;
+                $_SESSION['role'] = 'teacher';
+                $_SESSION['id'] = $teacher->getId();
+                View::setFlashMessage('You are now logged in', FlashCardType::isSuccess);
+                View::redirect('/teachers');
             } else {
-                View::setFlashMessage( 'You failed to log in',FlashCardType::isError);
+                View::setFlashMessage('You failed to log in', FlashCardType::isError);
                 View::redirect('/teacher/log');
             }
         } catch (\Throwable $th) {

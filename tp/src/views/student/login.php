@@ -17,10 +17,10 @@ use \utils\{PublicFile, View};
 
 <body>
     <?php View::render('partials/header'); ?>
-    <h1 class="padding-10">Login/Register Teacher</h1>
+    <h1 class="padding-10">Login/Register Student</h1>
     <div class="padding-10">
         <h2>Login</h2>
-        <form action="/teacher/login" method="post">
+        <form action="/student/login" method="post">
             <input type="mail" name="email" placeholder="Email">
             <input type="password" name="password" placeholder="Password">
             <button type="submit">Login</button>
@@ -28,7 +28,7 @@ use \utils\{PublicFile, View};
     </div>
     <div class="padding-10">
         <h2>Register</h2>
-        <form action="/teacher/create" method="post">
+        <form action="/student/create" method="post">
             <input type="text" name="name" placeholder="Name">
             <input type="text" name="firstname" placeholder="Firstname">
             <input type="mail" name="email" placeholder="Email">

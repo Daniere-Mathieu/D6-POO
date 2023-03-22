@@ -42,4 +42,20 @@ class Verification
     {
         return isset($_SESSION['logged']) && !empty($_SESSION['logged']) && $_SESSION['logged'] === true;
     }
+
+    public static function isTeacher(): bool
+    {
+        return isset($_SESSION['role']) && !empty($_SESSION['role']) && $_SESSION['role'] === "teacher";
+    
+    }
+    public static function isStudent(): bool
+    {
+        echo $_SESSION['role'];
+        return isset($_SESSION['role']) && !empty($_SESSION['role']) && $_SESSION['role'] === "student";
+    }
+
+    public static function isIdEquivalent(int $id): bool
+    {
+        return isset($_SESSION['id']) && !empty($_SESSION['id']) && $_SESSION['id'] === $id;
+    }
 }

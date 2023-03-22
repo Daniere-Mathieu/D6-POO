@@ -19,11 +19,13 @@ use \utils\{PublicFile, Verification, View};
         <nav class="nav">
             <ul class="navList">
                 <li><a href="/">Home</a></li>
+                <li><a href="/students">Students</a></li>
                 <li><a href="/teachers">Teachers</a></li>
                 <?php if(Verification::isLogged()) {?>
                 <li><a href="/teacher/logout">Logout</a></li>
                 <?php } else {?>
-                    <li><a href="/teacher/log">Login</a></li>
+                    <li><a href="/teacher/log">Teacher Login</a></li>
+                    <li><a href="/student/log">Student Login</a></li>
                 <?php }?>
             </ul>
         </nav>

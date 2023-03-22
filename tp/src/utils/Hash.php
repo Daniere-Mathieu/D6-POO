@@ -1,5 +1,6 @@
 <?php 
 
+namespace utils;
 class Hash
 {
     public static function hashPassword(string $password): string
