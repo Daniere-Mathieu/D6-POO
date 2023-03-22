@@ -20,7 +20,7 @@ use \utils\{PublicFile, View};
     <h1 class="padding-10">Delete</h1>
     <div class="padding-10">
         <p>Are you sure to delete <?= $teacher->getFullName() ?> ?</p>
-        <form action="/student/delete" method="post">
+        <form action="/teacher/delete" method="post">
             <input type="hidden" name="id" value="<?= $teacher->getId() ?>">
             <button type="submit">Sure to delete</button>
         </form>
