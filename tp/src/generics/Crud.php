@@ -69,6 +69,11 @@ class Crud
         return $query->fetchAll(PDO::FETCH_CLASS, $this->className);
     }
 
+    /**
+     * insert a new object in the database
+     * $id int id of the object
+     * @return bool
+     */
     public function insert(array $data, array $keys = []): bool
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) || !Verification::arrayKeysExistAndNotEmpty($keys, $data)) return false;
@@ -93,6 +98,14 @@ class Crud
         return $query->execute($data);
     }
 
+    /**
+     * this function is use to update a specific object in the database
+     * @param PDO $pdo PDO object use to update in the database
+     * @param int $id id of the object to update
+     * @param array $data array of data to update
+     * @param array $keys array of keys to update
+     * @return bool true if the object is update false if not
+     */
     public function update(int $id, array $data, array $keys): bool
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args()) || !Verification::arrayKeysExistAndNotEmpty($keys, $data)) return false;
@@ -114,6 +127,12 @@ class Crud
         return $query->execute();
     }
 
+    /**
+     * this function is use to delete a specific object in the database
+     * @param PDO $pdo PDO object use to delete in the database
+     * @param int $id id of the object to delete
+     * @return bool true if the object is delete false if not
+     */
     public function delete(int $id): bool
     {
         if (!Verification::verifyIfAllExistAndNotIsEmpty(func_get_args())) return false;
@@ -149,6 +168,12 @@ class Crud
         return intVal(ceil($count / $limit));
     }
 
+    /**
+     * this function is use to get the total of page avaiable
+     * @param PDO $pdo PDO object use to query the count
+     * @param int $limit limit of element display per page
+     * @return int number of page
+     */
     public function getByEmail(string $email, string $option = '*'): mixed
     {
         $query = $this->pdo->prepare('SELECT ' . $option . ' FROM ' . strtolower($this->getShortName()) . ' WHERE email = :email');
@@ -158,6 +183,7 @@ class Crud
     }
 
     /**
+     * this function is use to check if the value exist in the database
      * @return bool true if value doesn't exist in database and false for the rest
      */
     public function notExistByValue(string $key, string $value): bool

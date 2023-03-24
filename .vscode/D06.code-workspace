@@ -11,6 +11,10 @@
     {
       "name": "TP",
       "path": "../TP"
+    },
+    {
+      "name": "sql",
+      "path": "../sql"
     }
   ],
   "settings": {}

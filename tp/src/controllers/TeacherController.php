@@ -20,6 +20,11 @@ class TeacherController implements IController
         $this->model = new Teacher();
     }
 
+    /**
+     * return the view of the teacher card
+     * @param int $id
+     * @return void
+     */
     public function get(int $id)
     {
         try {
@@ -33,6 +38,10 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * return the view with all the teachers
+     * @return void
+     */
     public function getAll()
     {
         try {
@@ -49,6 +58,11 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * route to create a teacher
+     * @param array $data
+     * @return void
+     */
     public function create(array $data)
     {
         try {
@@ -74,6 +88,11 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * route to update a teacher
+     * @param array $data
+     * @return void
+     */
     public function update(array $data)
     {
         try {
@@ -88,6 +107,12 @@ class TeacherController implements IController
             throw $th;
         }
     }
+
+    /**
+     * route to display the view to update a teacher
+     * @param int $id
+     * @return void
+     */
     public function updateView(int $id)
     {
         try {
@@ -101,6 +126,11 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * route to delete a teacher
+     * @param array $data
+     * @return void
+     */
     public function delete(array $data)
     {
         try {
@@ -119,6 +149,12 @@ class TeacherController implements IController
             throw $th;
         }
     }
+
+    /**
+     * route to display the view to delete a teacher
+     * @param int $id
+     * @return void
+     */
     public function deleteView(int $id)
     {
         try {
@@ -132,6 +168,11 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * route to log as a teacher
+     * @param array $data
+     * @return void
+     */
     public function login($data)
     {
         try {
@@ -153,6 +194,10 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * route to display the view to log as a teacher
+     * @return void
+     */
     public function log()
     {
         try {
@@ -168,6 +213,10 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * route to log out
+     * @return void
+     */
     public function logout()
     {
         try {
@@ -179,6 +228,10 @@ class TeacherController implements IController
         }
     }
 
+    /**
+     * route to return all teachers in json format
+     * @return void
+     */
     public function getAllTeachersJson()
     {
         try {

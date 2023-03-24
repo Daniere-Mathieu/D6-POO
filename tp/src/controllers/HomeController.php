@@ -10,8 +10,10 @@ use utils\{Logger};
 class HomeController implements IController
 {
 
-
-
+    /**
+     * return the view of the home page
+     * @return void
+     */
     public function index()
     {
         try {

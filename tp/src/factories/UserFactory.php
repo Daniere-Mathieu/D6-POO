@@ -1,17 +1,22 @@
-<?php 
+<?php
+
 namespace factories;
 
 use generics\User;
 
 class UserFactory {
-    public static function create(string $role, string $name, string $firstname, string $email, string $password, string $classroom = null, string $subject = null):User {
+    /**
+     * Create a new instance of a User with the specified role, name, firstname, email, password, and optionally classroom or subject.
+     * @param string $role The role of the User to create.
+     * @return User The newly created User instance.
+     */
+    public static function create(string $role): User {
+        // Build the fully-qualified class name for the specified role
         $className = 'models\\' . ucfirst($role);
+
+        // Instantiate a new User instance with the specified parameters
         if ($classroom) {
-            return new $className($name, $firstname, $email, $password, $classroom);
-        } else if ($subject) {
-            return new $className($name, $firstname, $email, $password, $subject);
-        } else {
-            return new $className($name, $firstname, $email, $password);
-        }
+            return new $className();
+        } 
     }
 }
